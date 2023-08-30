@@ -1,0 +1,6 @@
+pymysql
+python-Levenshtein
+fuzzywuzzy
+pymorphy2
+rich
+googletrans==3.1.0a0
