@@ -46,7 +46,7 @@ def translate_skills(skills: list[Skill]):
     cursor = conn.cursor()
     trans = Translator()
     for i in track(range(len(skills)), description="Обновляем навыки"):
-        translated =  trans.translate(text=skills[i].Name, dest="en", src="ru").text
+        translated =  trans.translate(text=skills[i].Name, dest="en", src="ru").text.replace("'", "`")
         query = f"UPDATE demand SET translated='{translated}' WHERE id = {skills[i].Id}"
         cursor.execute(query)
         conn.commit()
