@@ -17,7 +17,6 @@ def translate():
         if not skills: 
             break
         db.translate_skills(skills)
-        break
 
 
 def remove_stop_skills():
