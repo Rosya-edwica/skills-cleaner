@@ -1,16 +1,23 @@
 from rich.progress import track
-import pymorphy2
+from models import Skill
+import pymorphy3
 
 
-def set_all_skills_to_infinitive(skills: list[str]) -> list[tuple[str, str]]:
-    pairs: list[tuple[str, str]] = []
+
+def modify_skills_to_infinivive(skills: list[Skill]) -> list[Skill]:
+    updated = []
     for item in track(range(len(skills)), description="[green]Transform skills to infinitive:"):
-        infinitive_skills = bring_all_words_to_the_infinitive(skills[item])
-        pairs.append(infinitive_skills)
-    return pairs
+        skill = skills[item]
+        infinitive_form = bring_all_words_to_the_infinitive(skill.Name)
+        updated.append(Skill(
+            Id=skill.Id,
+            Name=skill.Name,
+            NewName=infinitive_form
+        ))
+    return updated
 
 
-def bring_all_words_to_the_infinitive(skill: str) -> tuple[str, str]:
-    morph = pymorphy2.MorphAnalyzer()
+def bring_all_words_to_the_infinitive(skill: str) -> str:
+    morph = pymorphy3.MorphAnalyzer()
     infinitive = " ".join(morph.parse(i)[0].normal_form for i in skill.split())
-    return skill, infinitive
+    return infinitive

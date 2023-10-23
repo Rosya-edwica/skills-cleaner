@@ -39,6 +39,12 @@ def update():
     if updated_skills:
         db.update_skills(updated_skills)
 
+def infinitive():
+    print("Приводим навыки к инфинитиву")
+    skills = db.get_skills_without_infinitive()
+    infinitive_skills = cleaner.modify_skills_to_infinivive(skills)
+    print(infinitive_skills)
+    # db.save_skills_infinitive(infinitive_skills)
 
 def main():
     args = sys.argv[1:]
@@ -49,10 +55,9 @@ def main():
         case "translate": translate()
         case "update": update()
         case "remove": remove_stop_skills()
+        case "infinitive": infinitive()
         case _: exit(ERROR_MESSAGE)
     
-
-
 
 if __name__ == "__main__":
     main()
