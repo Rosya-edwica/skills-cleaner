@@ -43,8 +43,7 @@ def infinitive():
     print("Приводим навыки к инфинитиву")
     skills = db.get_skills_without_infinitive()
     infinitive_skills = cleaner.modify_skills_to_infinivive(skills)
-    print(infinitive_skills)
-    # db.save_skills_infinitive(infinitive_skills)
+    db.save_skills_infinitive(infinitive_skills)
 
 def main():
     args = sys.argv[1:]
