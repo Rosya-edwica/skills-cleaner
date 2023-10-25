@@ -45,6 +45,12 @@ def infinitive():
     infinitive_skills = cleaner.modify_skills_to_infinivive(skills)
     db.save_skills_infinitive(infinitive_skills)
 
+def duplicates():
+    print("Ищем повторения")
+    skills = db.get_infinitive_skills()
+    cash = cleaner.match_skills_by_infinitive(skills)
+    db.mark_duplicates(cash)
+
 def main():
     args = sys.argv[1:]
     if len(args) == 0:
@@ -55,6 +61,7 @@ def main():
         case "update": update()
         case "remove": remove_stop_skills()
         case "infinitive": infinitive()
+        case "duplicates": duplicates()
         case _: exit(ERROR_MESSAGE)
     
 

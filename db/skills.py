@@ -14,6 +14,11 @@ def get_all_skills() -> list[Skill]:
     query = "SELECT id, name FROM demand WHERE is_deleted IS NOT TRUE"
     return __get_skills_by_query(query)
 
+
+def get_infinitive_skills() -> list[Skill]:
+    query = "SELECT id, infinitive FROM demand WHERE is_deleted IS NOT TRUE AND infinitive IS NOT NULL"
+    return __get_skills_by_query(query)
+
 def __get_skills_by_query(query: str) -> list[Skill]:
     conn = connect()
     cursor = conn.cursor()
@@ -81,3 +86,32 @@ def save_skills_infinitive(skills: list[Skill]):
         cursor.execute(query)
         conn.commit()
     conn.close()
+
+
+def mark_duplicates(data: dict[int, list[int]]):
+    """
+    Нужно передать словарь, в котором
+    ключ - id оригиналов
+    значение - список id дубликатов
+    Функция выберет все id дубликатов и поставит им флаг is_deleted
+    """
+    history = []
+    conn = connect()
+    cursor = conn.cursor()
+    for original, duplicates in data.items():
+        for dup in duplicates:
+            update_position_link = f"UPDATE demand SET is_deleted = TRUE WHERE id = {dup}"
+            query_set_delete_duplicate = f"UPDATE position_to_demand SET demand_id = {original} WHERE demand_id = {dup}"
+            cursor.execute(update_position_link)
+            cursor.execute(query_set_delete_duplicate)
+
+            history.append(query_set_delete_duplicate)
+        conn.commit()
+    conn.close()
+
+    save_history_to_file(history)
+
+def save_history_to_file(data: list[str]):
+    f = open("history", "w")
+    f.write("\n".join(data))
+    f.close()
