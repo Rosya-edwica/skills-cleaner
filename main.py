@@ -51,6 +51,13 @@ def duplicates():
     cash = cleaner.match_skills_by_infinitive(skills)
     db.mark_duplicates(cash)
 
+def fuzz_duplicates():
+    print("Ищем повторения с помощью fuzzyWuzzy")
+    skills = db.get_all_skills()
+    cleaned = cleaner.clean_skills(skills)
+
+    cleaner.match_skills_by_fuzzy(cleaned)
+
 def main():
     args = sys.argv[1:]
     if len(args) == 0:
@@ -62,6 +69,7 @@ def main():
         case "remove": remove_stop_skills()
         case "infinitive": infinitive()
         case "duplicates": duplicates()
+        case "fuzz": fuzz_duplicates()
         case _: exit(ERROR_MESSAGE)
     
 

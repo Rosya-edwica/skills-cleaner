@@ -64,3 +64,13 @@ def find_skills_with_stop_symbols(skills: list[Skill]) -> list[Skill]:
             counter += 1
     print(f"Количество навыков, содержащих стоп-символы, подлежающих удалению: {counter} (-{tools.calculate_the_difference_in_percentages(len(skills), counter)}%)")
     return finded
+
+
+
+def clean_skills(skills: list[Skill]) -> list[Skill]:
+    updated = []
+    for skill in skills:
+        skill.Name = re.sub("опыт работы со |опыт работы с |знание |умение |работа в |работать в |готовность| желание| программирование на |навыки |базовые |база |опыт ", "", skill.Name.lower())
+        updated.append(skill)
+    print("Обработали навыки")
+    return updated

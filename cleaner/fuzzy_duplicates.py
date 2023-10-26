@@ -4,15 +4,20 @@ from time import perf_counter
 from rich.progress import track
 
 
-def match_skills_by_fuzzy(skills: list[str]) -> list[str]:
-    for index, item in enumerate(skills):
-        if item == "": continue
-        pair = process.extractOne(item, skills[index+1:])
-        if pair[0]:
-            print(f"Пара для навыка: {item} = {pair}")
-        else:
-            print(f"Нет пары для: {item}")
-
+def match_skills_by_fuzzy(skills: list[Skill]) -> list[str]:
+    for index in track(range(len(skills)), description="Duplicate searching..."):
+        skill = skills[index]
+        duplicates  = []
+        pair = process.extract(skill.Name, skills[index+1:], limit=3)
+        for i in pair:
+            duplicates.append(f"{skill.Id}|{skill.Name}:{i[0].Id}:{i[0].Name}:{i[-1]}")
+        add_to_logs(duplicates)
+            
+def add_to_logs(data: list[str]):
+    if not data: return
+    file = open("fuzzy_logs.txt", mode="a", encoding="utf-8")
+    file.write("\n".join(data))
+    file.close()
 
 
 def match_skills_by_infinitive(skills: list[Skill]) -> dict[int, list[int]]:

@@ -1,3 +1,3 @@
 from cleaner.fuzzy_duplicates import match_skills_by_fuzzy, match_skills_by_infinitive
 from cleaner.infinitive import modify_skills_to_infinivive
-from cleaner.regexp_cleaner import find_stop_skills, cut_stop_symbols, find_skills_with_stop_symbols
+from cleaner.regexp_cleaner import find_stop_skills, cut_stop_symbols, find_skills_with_stop_symbols, clean_skills
